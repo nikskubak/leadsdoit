@@ -1,0 +1,125 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Спідометр і відстань</string>
+    <string name="default_speed_value">0.0</string>
+    <string name="miles">миль/год</string>
+    <string name="kilometers">км/год</string>
+    <string name="distance">0 м</string>
+    <string name="max_speed_miles">0.0 миль/год</string>
+    <string name="max_speed_km">0.0 км/год</string>
+    <string name="time">00:00:00</string>
+    <string name="average_speed_miles">0.0 миль/год</string>
+    <string name="average_speed_km"> 0.0 км/год</string>
+    <string name="start">Старт</string>
+    <string name="finish">Фініш</string>
+    <string name="reset">Заново</string>
+    <string name="is_running">Працює спідометр</string>
+    <string name="kph">км/год</string>
+    <string name="mph">миль/год</string>
+
+    <string name="speed">Швидкість:</string>
+    <string name="av_speed">Серед.</string>
+    <string name="m_speed">Макс.</string>
+    <string name="dist">Відстань</string>
+    <string name="meter_d">м</string>
+    <string name="kilometer_d">км</string>
+    <string name="mile_d">миль</string>
+    <string name="time_title">Час</string>
+    <string name="foot">фут</string>
+    <string name="routes">Маршрути</string>
+    <string name="duration">Час в дорозі</string>
+    <string name="permission_alert_title">Доступ до місця розташування</string>
+    <string name="permission_alert_message">Надайте, будь ласка, доступ до Вашого розташування у фоновому режимі. Так додаток зможе точніше визначати вашу швидкість. Перейдіть в налаштування і натисніть \"Дозволити в будь-якому випадку\". \n\nВи в будь-який момент зможете це скасувати</string>
+    <string name="alert_yes">Перейти</string>
+    <string name="need_location_perm">Надайте, будь ласка, доступ на визначення свого місця розташування</string>
+    <string name="start_at">Час старту</string>
+    <string name="finish_at">Час фінішу</string>
+    <string name="start_info">Спідометр вже запущений. Почніть рух для вимірювання Вашої швидкості</string>
+    <string name="subs_descr_1">Відключення реклами назавжди</string>
+    <string name="subs_descr_2">Відображення маршрутів на карті</string>
+    <string name="subs_descr_3">Більш точне визначення швидкості</string>
+    <string name="subs_descr_4">Розширені налаштування</string>
+    <string name="subs_descr_5">Прямий зв\'язок з розробниками</string>
+    <string name="pro_mode">PRO РЕЖИМ</string>
+    <string name="buy">Купити</string>
+    <string name="routes_full_stat">загальна кількість маршрутів</string>
+    <string name="max_full_stat">найвища швидкість за весь час</string>
+    <string name="av_full_stat">середня швидкість всіх маршрутів</string>
+    <string name="distance_full_stat">пройдена Вами відстань за весь час (Одометр)</string>
+    <string name="rate">Оцінити додаток</string>
+    <string name="contact_us">Написати розробникам</string>
+    <string name="distance_ft">0 футів</string>
+    <string name="empty_routes">Тут будуть відображатися Ваші маршрути</string>
+    <string name="most_distance">Найбільша дистанція</string>
+    <string name="most_duration">Найдовший час в дорозі</string>
+    <string name="most_speed">Найвища швидкість</string>
+    <string name="delete_route">Видалити цей маршрут?</string>
+    <string name="route_date_format">dd.MM.yyyy</string>
+
+    <string name="rate_title">Сподобався наш додаток? 😊🤩</string>
+    <string name="trouble">Повідомити про проблему</string>
+    <string name="google_play">Оцінити</string>
+    <string name="mail_client">Оберіть Gmail або інший поштовий клієнт</string>
+    <string name="app_trouble">Проблема в додатку</string>
+    <string name="dialog_battery_title">Налаштування энергозбережения</string>
+    <string name="dialog_battery_message">Для коректної роботи додатку при заблокованому екрані надайте додаткові дозволи</string>
+    <string name="dialog_battery_button_negative">Відміна</string>
+    <string name="dialog_battery_button_positive">Налаштування</string>
+    <string name="trial_mode">Trial</string>
+    <string name="trial_title">Trial-версія</string>
+    <string name="trial_message">Ви можете переглянути перші 10 маршрутів руху у Trial-версії додатку. Зняти обмеження можна в режимі PRO 👑</string>
+    <string name="pause">Пауза</string>
+    <string name="resume">Продовжити</string>
+    <string name="settings">Налаштування</string>
+    <string name="metrics">Одиниці вимірювання</string>
+
+    <string name="subs_title">Ви отримуєте</string>
+    <string name="subscribe">Підписатися</string>
+    <string name="subs_item_title_1">Відключення реклами</string>
+    <string name="subs_item_description_1">Тепер нічого не буде відволікати</string>
+    <string name="subs_item_title_2">Маршрути на карті</string>
+    <string name="subs_item_description_2">Ніяких обмежень на перегляд карти</string>
+    <string name="subs_item_title_3">Пауза маршруту</string>
+    <string name="subs_item_description_3">Вмикайте паузу на маршруті при зупинці</string>
+    <string name="subs_item_title_4">Статистика топ-маршрутів</string>
+    <string name="subs_item_description_4">Найвища швидкість чи найбільша дистанція</string>
+    <string name="cancel_anytime">Відписатись можна коли завгодно</string>
+
+
+    <plurals name="subs_day_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d дня</item>
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d днів</item>
+        <item quantity="many">%d днів</item>
+        <item quantity="other">%d днів</item>
+    </plurals>
+
+    <plurals name="subs_month_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d міс.</item>
+        <item quantity="one">%d міс.</item>
+        <item quantity="few">%d міс.</item>
+        <item quantity="many">%d міс.</item>
+        <item quantity="other">%d міс.</item>
+    </plurals>
+
+    <plurals name="subs_year_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d роки</item>
+        <item quantity="one">%d рік</item>
+        <item quantity="few">%d років</item>
+        <item quantity="many">%d років</item>
+        <item quantity="other">%d років</item>
+    </plurals>
+
+    <plurals name="subs_week_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d тижні</item>
+        <item quantity="one">%d тиждень</item>
+        <item quantity="few">%d тижнів</item>
+        <item quantity="many">%d тижнів</item>
+        <item quantity="other">%d тижнів</item>
+    </plurals>
+
+    <string name="month_short">міс.</string>
+</resources>

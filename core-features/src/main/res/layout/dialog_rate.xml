@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="24dp"
+    android:backgroundTint="#222121"
+    android:theme="@style/Theme.MaterialComponents.NoActionBar">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rate_title"
+            android:gravity="center"
+            android:paddingBottom="24dp"
+            android:textColor="#FFF"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:text="@string/google_play"/>
+
+        <TextView
+            android:id="@+id/problemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trouble"
+            android:textSize="12sp"
+            android:padding="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#7F7F7F"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,123 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Geschwindigkeit und Entfernung</string>
+    <string name="default_speed_value">0.0</string>
+    <string name="miles">MPH</string>
+    <string name="kilometers">KPH</string>
+    <string name="distance">0 m</string>
+    <string name="distance_ft">0 ft</string>
+    <string name="max_speed_miles">0.0 MPH</string>
+    <string name="max_speed_km">0.0 KPH</string>
+    <string name="time">00:00:00</string>
+    <string name="average_speed_miles">0.0 MPH</string>
+    <string name="average_speed_km">0.0 KPH</string>
+    <string name="start">Start</string>
+    <string name="finish">Beenden</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="is_running">Der Tacho läuft</string>
+    <string name="kph">KPH</string>
+    <string name="mph">MPH</string>
+
+    <string name="speed">Geschwindigkeit</string>
+    <string name="av_speed">Durchschnitt</string>
+    <string name="m_speed">Max</string>
+    <string name="dist">Entfernung</string>
+    <string name="meter_d">m</string>
+    <string name="foot">ft</string>
+    <string name="kilometer_d">km</string>
+    <string name="mile_d">mi</string>
+    <string name="time_title">Zeit</string>
+    <string name="routes">Routen</string>
+    <string name="duration">Zeitdauer</string>
+    <string name="permission_alert_title">Standortzugriff</string>
+    <string name="permission_alert_message">Bitte erlauben Sie den Zugriff auf Ihren Standort im Hintergrund. Dies ermöglicht der App, Ihre Geschwindigkeit genauer zu bestimmen. Gehen Sie zu den Einstellungen und klicken Sie auf „Dennoch erlauben“. \n\nSie können dies jederzeit abbrechen</string>
+    <string name="alert_yes">Gehen</string>
+    <string name="need_location_perm">Die App benötigt GPS-Berechtigung</string>
+    <string name="storage_location_perm" translatable="false">Die App benötigt Speicherberechtigung</string>
+    <string name="start_at">Startzeit</string>
+    <string name="finish_at">Endzeit</string>
+    <string name="start_info">Der Tacho läuft bereits. Fahren Sie los, um Ihre Geschwindigkeit zu messen</string>
+    <string name="subs_descr_1">Werbung dauerhaft deaktivieren</string>
+    <string name="subs_descr_2">Routen auf der Karte anzeigen</string>
+    <string name="subs_descr_3">Genauere Geschwindigkeitsmessung</string>
+    <string name="subs_descr_4">Erweiterte Einstellungen</string>
+    <string name="subs_descr_5">Direkte Kommunikation mit Entwicklern</string>
+    <string name="pro_mode">PRO-MODUS</string>
+    <string name="buy">Kaufen</string>
+    <string name="routes_full_stat">Gesamtzahl der Routen</string>
+    <string name="max_full_stat">Höchste Geschwindigkeit</string>
+    <string name="av_full_stat">Durchschnittsgeschwindigkeit aller Routen</string>
+    <string name="distance_full_stat">Gesamtreisestrecke (Kilometerzähler)</string>
+    <string name="rate">App bewerten</string>
+    <string name="contact_us">Entwickler kontaktieren</string>
+    <string name="empty_routes">Ihre Routen werden hier angezeigt</string>
+    <string name="most_distance">Längste Strecke</string>
+    <string name="most_duration">Längste Fahrzeit</string>
+    <string name="most_speed">Höchste Geschwindigkeit</string>
+    <string name="delete_route">Diese Route löschen?</string>
+    <string name="route_date_format">dd.MM.yyyy</string>
+    <string name="rate_title">Gefällt Ihnen unsere App? 😊🤩</string>
+    <string name="trouble">Ein Problem melden</string>
+    <string name="google_play">Bewerten</string>
+    <string name="mail_client">Wählen Sie Gmail oder einen anderen E-Mail-Client aus</string>
+    <string name="app_trouble">Problem mit</string>
+    <string name="dialog_battery_title">Energieeinstellungen</string>
+    <string name="dialog_battery_message">Um die App bei gesperrtem Bildschirm korrekt zu nutzen, erteilen Sie zusätzliche Berechtigungen</string>
+    <string name="dialog_battery_button_negative">Abbrechen</string>
+    <string name="dialog_battery_button_positive">Einstellungen</string>
+    <string name="trial_mode">Testversion</string>
+    <string name="trial_title">Testversion</string>
+    <string name="trial_message">In der Testversion der App können Sie die ersten 10 Fahrtrouten anzeigen. Sie können die Einschränkung im PRO-Modus entfernen 👑</string>
+
+    <string name="pause">Pause</string>
+    <string name="resume">Fortsetzen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="metrics">Einheiten</string>
+
+    <string name="subs_title">Vorteile</string>
+    <string name="subscribe">Abonnieren</string>
+
+    <string name="subs_item_title_1">Werbung entfernen</string>
+    <string name="subs_item_description_1">Jetzt wird Sie nichts mehr ablenken</string>
+    <string name="subs_item_title_2">Routen auf der Karte</string>
+    <string name="subs_item_description_2">Keine Einschränkungen bei der Kartenansicht</string>
+    <string name="subs_item_title_3">Routenpause</string>
+    <string name="subs_item_description_3">Routenpause bei Stopps aktivieren</string>
+    <string name="subs_item_title_4">Statistiken der besten Routen</string>
+    <string name="subs_item_description_4">Höchste Geschwindigkeit oder längste Strecke</string>
+
+    <string name="cancel_anytime">Jederzeit kündbar</string>
+
+    <plurals name="subs_day_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d Tage</item>
+        <item quantity="one">%d Tag</item>
+        <item quantity="few">%d Tage</item>
+        <item quantity="many">%d Tage</item>
+        <item quantity="other">%d Tage</item>
+    </plurals>
+    <plurals name="subs_month_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d Monate</item>
+        <item quantity="one">%d Monat</item>
+        <item quantity="few">%d Monate</item>
+        <item quantity="many">%d Monate</item>
+        <item quantity="other">%d Monate</item>
+    </plurals>
+    <plurals name="subs_year_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d Jahre</item>
+        <item quantity="one">%d Jahr</item>
+        <item quantity="few">%d Jahre</item>
+        <item quantity="many">%d Jahre</item>
+        <item quantity="other">%d Jahre</item>
+    </plurals>
+    <plurals name="subs_week_plurals" tools:ignore="UnusedQuantity">
+        <item quantity="zero">-</item>
+        <item quantity="two">%d Wochen</item>
+        <item quantity="one">%d Woche</item>
+        <item quantity="few">%d Wochen</item>
+        <item quantity="many">%d Wochen</item>
+        <item quantity="other">%d Wochen</item>
+    </plurals>
+    <string name="month_short">Mon.</string>
+</resources>

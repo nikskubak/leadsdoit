@@ -81,7 +81,7 @@ class PurchasesRepositoryImpl @Inject constructor(
                     }
             } else {
                 val localSubs = Hawk.get<MutableList<Purchase?>?>(HawkConstants.SUBS)
-                val localPurch = Hawk.get<MutableList<PurchaseHistoryRecord?>?>(HawkConstants.PURCHASES)
+                val localPurch = Hawk.get<MutableList<Purchase?>?>(HawkConstants.PURCHASES)
                 if (localSubs.isNullOrEmpty() && localPurch.isNullOrEmpty()) {
                     return flowOf(Result.failure(Exception("Purchases not found")))
                 } else {

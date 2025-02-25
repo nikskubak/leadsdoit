@@ -47,7 +47,6 @@ class PurchasesRepositoryImpl @Inject constructor(
             }
     }
 
-
     override fun isProMode(
         activity: Activity,
         coroutineScope: CoroutineScope
@@ -81,8 +80,9 @@ class PurchasesRepositoryImpl @Inject constructor(
                         emit(Result.failure(Exception("Purchases not found")))
                     }
             } else {
-                val localSubs = Hawk.get<MutableList<Purchase>?>(HawkConstants.SUBS)
-                if (localSubs.isNullOrEmpty()) {
+                val localSubs = Hawk.get<MutableList<Purchase?>?>(HawkConstants.SUBS)
+                val localPurch = Hawk.get<MutableList<PurchaseHistoryRecord?>?>(HawkConstants.PURCHASES)
+                if (localSubs.isNullOrEmpty() && localPurch.isNullOrEmpty()) {
                     return flowOf(Result.failure(Exception("Purchases not found")))
                 } else {
                     Log.e("isProMode", "localSubs = ${localSubs.size}")

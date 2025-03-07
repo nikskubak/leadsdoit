@@ -34,7 +34,7 @@ class SubscriptionsViewModel constructor(
     var purchasesRepository: PurchasesRepository
 ) : AndroidViewModel(app) {
 
-    var productList: MutableList<ProductDetails>? = null
+    var productList: List<ProductDetails>? = null
     var newBillingManager: BillingManager? = null
     private var _productsUiState = MutableStateFlow<BaseUiState?>(null)
     var productsUiState: StateFlow<BaseUiState?> = _productsUiState
@@ -42,7 +42,7 @@ class SubscriptionsViewModel constructor(
     fun initNewBilling(activity: Activity, onUiSuccess: (purchase : Purchase?) -> Unit = {}) {
         newBillingManager =
             BillingManager.Companion.Builder(activity)
-                .productsList(listOf(Product("relax_music_pro_mode", ProductType.INAPP)))
+                .productsList(listOf(Product("stretch_subs_month", ProductType.SUBS)))
                 .onPurchaseSuccessListener { purchase ->
                     Log.e("onPurchaseSuccessListen", purchase.toString())
                     Hawk.put(HawkConstants.PURCHASES, listOf(purchase))
@@ -88,9 +88,11 @@ class SubscriptionsViewModel constructor(
             ?.onEach { result ->
                 Log.e("getProductListFlow", result.toString())
                 if (result?.isSuccess == true) {
+                    val list = result.getOrDefault(emptyList()) ?: emptyList()
+                    productList = list
                     _productsUiState.update {
                         ProductsState(
-                            result.getOrDefault(emptyList()) ?: emptyList()
+                            list
                         )
                     }
                 } else {
@@ -108,9 +110,19 @@ class SubscriptionsViewModel constructor(
             ?.launchIn(viewModelScope)
     }
 
-//    fun savePurchaseById(purchase: Purchase, id : String): LiveData<Result<Boolean>> {
-//        return purchasesRepository.savePurchases(purchase, id)
-//    }
+    fun isBaseSubscriptionPlan(sub: ProductDetails.SubscriptionOfferDetails) =
+        sub.offerId.isNullOrEmpty()
+
+    fun isFreePricingPhase(offerDetails: ProductDetails.SubscriptionOfferDetails): Boolean {
+        var isFree = false
+        offerDetails.pricingPhases.pricingPhaseList.forEach {
+            if (it.priceAmountMicros == 0L) {
+                isFree = true
+                return@forEach
+            }
+        }
+        return isFree
+    }
 
     class Factory @Inject constructor(
         var application: Application,

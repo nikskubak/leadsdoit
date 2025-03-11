@@ -51,8 +51,7 @@ class PurchasesRepositoryImpl @Inject constructor(
         activity: Activity,
         coroutineScope: CoroutineScope
     ): Flow<Result<Boolean>>? {
-        val localPurchases = Hawk.get<MutableList<Purchase>?>(HawkConstants.PURCHASES)
-        if (localPurchases.isNullOrEmpty()) {
+//        if (localPurchases.isNullOrEmpty()) {
             if (NetworkUtils.isInternetAvailable(activity)) {
                 return getPurchasesFromGooglePlay(activity, coroutineScope)
                     ?.map {
@@ -85,13 +84,13 @@ class PurchasesRepositoryImpl @Inject constructor(
                 if (localSubs.isNullOrEmpty() && localPurch.isNullOrEmpty()) {
                     return flowOf(Result.failure(Exception("Purchases not found")))
                 } else {
-                    Log.e("isProMode", "localSubs = ${localSubs.size}")
+                    Log.e("isProMode", "localSubs = ${localSubs.size}, localPurch = ${localPurch.size}")
                     return flowOf(Result.success(true))
                 }
             }
-        } else {
-            Log.e("localPurchases", localPurchases.toString())
-            return flowOf(Result.success(true))
-        }
+//        } else {
+//            Log.e("localPurchases", localPurchases.toString())
+//            return flowOf(Result.success(true))
+//        }
     }
 }

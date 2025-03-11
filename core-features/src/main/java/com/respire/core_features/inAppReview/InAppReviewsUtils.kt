@@ -13,7 +13,7 @@ import com.respire.core_features.databinding.DialogRateBinding
 
 object InAppReviewHelper {
     fun reviewApp(
-        applicationId : String,
+        applicationId: String,
         activity: Activity,
         onCompleteListener: (isSuccess: Boolean) -> Unit
     ) {
@@ -37,8 +37,8 @@ object InAppReviewHelper {
     }
 
     public fun showReviewDialog(
-        appName : String,
-        applicationId : String,
+        appName: String,
+        applicationId: String,
         context: Context,
         activity: Activity,
         onCompleteListener: (isSuccess: Boolean) -> Unit
@@ -50,7 +50,7 @@ object InAppReviewHelper {
         builder.setView(binding.root)
         val dialog: AlertDialog = builder.create()
         binding.rateButton.setOnClickListener {
-            reviewApp(applicationId, activity, onCompleteListener)
+            openAppInGooglePlay(applicationId, activity)
             dialog.dismiss()
         }
         binding.problemButton.setOnClickListener {
@@ -60,7 +60,7 @@ object InAppReviewHelper {
         dialog.show()
     }
 
-    private fun openAppInGooglePlay(applicationId: String, activity: Activity) {
+    fun openAppInGooglePlay(applicationId: String, activity: Activity) {
         try {
             activity.startActivity(
                 Intent(
@@ -78,7 +78,7 @@ object InAppReviewHelper {
         }
     }
 
-    private fun openMailClient(appName : String, activity: Activity) {
+    private fun openMailClient(appName: String, activity: Activity) {
         try {
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:") // only email apps should handle this

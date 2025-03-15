@@ -266,7 +266,9 @@ class BillingManager private constructor(var builder: Builder) {
                                     close(it)
                                 }
                             } else {
-                                close(Exception("ConsumedPurchases not found"))
+                                trySend(
+                                    Result.success(emptyList())
+                                )
                             }
                         }
                     } else {

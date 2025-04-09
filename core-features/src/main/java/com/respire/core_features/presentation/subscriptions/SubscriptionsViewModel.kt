@@ -39,10 +39,14 @@ class SubscriptionsViewModel constructor(
     private var _productsUiState = MutableStateFlow<BaseUiState?>(null)
     var productsUiState: StateFlow<BaseUiState?> = _productsUiState
 
-    fun initNewBilling(activity: Activity, onUiSuccess: (purchase : Purchase?) -> Unit = {}) {
+    fun initNewBilling(
+        activity: Activity,
+        product: Product,
+        onUiSuccess: (purchase: Purchase?) -> Unit = {}
+    ) {
         newBillingManager =
             BillingManager.Companion.Builder(activity)
-                .productsList(listOf(Product("stretch_subs_month", ProductType.SUBS)))
+                .productsList(listOf(product))
                 .onPurchaseSuccessListener { purchase ->
                     Log.e("onPurchaseSuccessListen", purchase.toString())
                     Hawk.put(HawkConstants.PURCHASES, listOf(purchase))

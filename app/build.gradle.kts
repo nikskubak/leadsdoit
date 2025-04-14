@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -25,6 +28,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_URL", "\"https://pro-api.coinmarketcap.com/\"")
+            buildConfigField("String", "API_KEY", "\"5fc54438-353f-48ae-8487-a49d9e3d3310\"")
+        }
+        debug {
+            buildConfigField("String", "API_URL", "\"https://sandbox-api.coinmarketcap.com/\"")
+            buildConfigField("String", "API_KEY", "\"b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c\"")
         }
     }
     compileOptions {
@@ -36,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        android.buildFeatures.buildConfig = true
     }
 }
 
@@ -57,5 +67,32 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation(project(":core-features"))
+    //Room
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.gson)
+    implementation(libs.retrofit.gson)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.dagger.compiler)
+
+    //Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    //Navigation
+    implementation(libs.serialization)
+    implementation(libs.navigation.compose)
+
+
+//    implementation(project(":core-features"))
 }

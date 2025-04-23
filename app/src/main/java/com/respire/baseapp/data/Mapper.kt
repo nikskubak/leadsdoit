@@ -46,3 +46,7 @@ fun mapToCurrencyDb(currencyResponse: CurrencyResponse): CurrencyDB {
         currencyResponse.platform
     )
 }
+
+object ZodiacMapper{
+
+}

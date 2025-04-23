@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -92,6 +93,17 @@ dependencies {
     //Navigation
     implementation(libs.serialization)
     implementation(libs.navigation.compose)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.analytics)
+
+    //Lottie
+    implementation(libs.lottie.compose)
+
+    //Hawk
+    implementation(libs.hawk)
 
 
 //    implementation(project(":core-features"))

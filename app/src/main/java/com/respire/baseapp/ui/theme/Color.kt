@@ -27,3 +27,6 @@ val SecondaryDark = Color(0xFFBD2D9E)
 
 val OnPrimary = Color(0xFFFFFFFF)
 val OnPrimaryDark = Color(0xFFE8E8E8)
+
+val OnSurfaceVariant = Color(0xFF73E9FE)
+val OnSurfaceVariantDark = Color(0xFF55ACBB)

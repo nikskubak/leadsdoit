@@ -29,9 +29,10 @@ open class FirebaseModule {
         val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 360
+            minimumFetchIntervalInSeconds = 1
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.fetchAndActivate()
         return remoteConfig
     }
 }

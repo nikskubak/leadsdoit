@@ -33,7 +33,8 @@ import com.respire.baseapp.ui.zodiacMain.settings.SettingsScreen
 fun ZodiacMainScreen(
     appTheme: ThemeMode,
     onSelectZodiac: () -> Unit,
-    onAppThemeClick: () -> Unit
+    onAppThemeClick: () -> Unit,
+    onZodiacDetailsClick: (String) -> Unit
 ) {
     var currentScreenIndex by rememberSaveable { mutableIntStateOf(0) }
 
@@ -64,7 +65,7 @@ fun ZodiacMainScreen(
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                            selectedIconColor = MaterialTheme.colorScheme.secondary,
                             unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
                             selectedTextColor = MaterialTheme.colorScheme.onPrimary,
                             unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
@@ -94,7 +95,7 @@ fun ZodiacMainScreen(
                 label = "screen_transition"
             ) { currentScreenIndex ->
                 when (currentScreenIndex) {
-                    0 -> DailyScreen()
+                    0 -> DailyScreen(onZodiacDetailsClick)
                     1 -> SettingsScreen(appTheme, onSelectZodiac, onAppThemeClick)
                     else -> {}
                 }
@@ -116,6 +117,6 @@ fun ZodiacMainScreen(
 @Composable
 fun ZodiacMainScreenPreview() {
     BaseAppTheme(darkTheme = false, dynamicColor = false) {
-        ZodiacMainScreen(ThemeMode.SYSTEM, {}, {})
+        ZodiacMainScreen(ThemeMode.SYSTEM, {}, {}, {})
     }
 }

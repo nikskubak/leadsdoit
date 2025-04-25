@@ -1,5 +1,8 @@
 package com.respire.baseapp.ui.zodiacMain.daily
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,19 +42,19 @@ import com.respire.baseapp.ui.base.BaseUiState
 import com.respire.baseapp.ui.theme.BaseAppTheme
 
 @Composable
-fun DailyScreen() {
+fun DailyScreen(onZodiacDetailsClick: (String) -> Unit) {
     val viewModel = hiltViewModel<DailyZodiacViewModel>()
     val uiState by viewModel.uiState.collectAsState()
     BaseScreen(uiState) {
         val content = (uiState as? BaseUiState.ContentState<*>)?.content
         if (content is DailyZodiacSignsUi) {
-            DailyScreenUI(content)
+            DailyScreenUI(content, onZodiacDetailsClick)
         }
     }
 }
 
 @Composable
-fun DailyScreenUI(uiState: DailyZodiacSignsUi) {
+fun DailyScreenUI(uiState: DailyZodiacSignsUi, onZodiacDetailsClick: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -100,7 +103,7 @@ fun DailyScreenUI(uiState: DailyZodiacSignsUi) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = uiState.zodiacEntity.dailyHoroscope.orEmpty(),
+                        text = uiState.zodiacEntity.todayHoroscope,
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onPrimary
@@ -108,46 +111,52 @@ fun DailyScreenUI(uiState: DailyZodiacSignsUi) {
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .clip(RoundedCornerShape(28.dp))
-                            .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(
-                                        MaterialTheme.colorScheme.primary,
-                                        MaterialTheme.colorScheme.secondary
-                                    )
-                                )
-                            )
+                    AnimatedVisibility(
+                        visible = uiState.zodiacEntity.action != null,
+                        enter = fadeIn(),
+                        exit = fadeOut()
                     ) {
-                        // Gradient Button
-                        Button(
-                            onClick = { /* TODO: Handle button click */ },
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(56.dp)
-                                .border(
-                                    width = 2.dp,
+                                .clip(RoundedCornerShape(28.dp))
+                                .background(
                                     brush = Brush.horizontalGradient(
                                         colors = listOf(
                                             MaterialTheme.colorScheme.primary,
                                             MaterialTheme.colorScheme.secondary
                                         )
-                                    ),
-                                    shape = RoundedCornerShape(28.dp)
-                                ),
-                            shape = RoundedCornerShape(28.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent
-                            )
+                                    )
+                                )
                         ) {
-                            Text(
-                                text = "Get Today's Reading",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
+                            // Gradient Button
+                            Button(
+                                onClick = { onZodiacDetailsClick(uiState.zodiacEntity.action?.details.orEmpty()) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp)
+                                    .border(
+                                        width = 2.dp,
+                                        brush = Brush.horizontalGradient(
+                                            colors = listOf(
+                                                MaterialTheme.colorScheme.primary,
+                                                MaterialTheme.colorScheme.secondary
+                                            )
+                                        ),
+                                        shape = RoundedCornerShape(28.dp)
+                                    ),
+                                shape = RoundedCornerShape(28.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent
+                                )
+                            ) {
+                                Text(
+                                    text = uiState.zodiacEntity.action?.action.orEmpty(),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                            }
                         }
                     }
                 }
@@ -161,7 +170,17 @@ fun DailyScreenUI(uiState: DailyZodiacSignsUi) {
 fun DailyScreenPreview() {
     BaseAppTheme(darkTheme = false, dynamicColor = false) {
         DailyScreenUI(
-            DailyZodiacSignsUi(ZodiacEntity("1", "name", "1-1", "Bugün evren senin yanında! Uzun zamandır ertelediğin bir şeyi denemek için mükemmel bir zaman. Şans tam yanında – sadece elini uzat. Cesur ol, çünkü şans cesurları sever.", R.drawable.ic_oven))
+            DailyZodiacSignsUi(
+                ZodiacEntity(
+                    "1",
+                    "name",
+                    "1-1",
+                    emptyList(),
+                    R.drawable.ic_oven,
+                    "Bugün evren senin yanında! Uzun zamandır ertelediğin bir şeyi denemek için mükemmel bir zaman. Şans tam yanında – sadece elini uzat. Cesur ol, çünkü şans cesurları sever."
+                )
+            ),
+            {}
         )
     }
 }

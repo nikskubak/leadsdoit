@@ -6,9 +6,16 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,13 +24,17 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.respire.baseapp.ui.navigation.ScaleTransitionDirection
 import com.respire.baseapp.ui.navigation.Screen
+import com.respire.baseapp.ui.navigation.scaleIntoContainer
+import com.respire.baseapp.ui.navigation.scaleOutOfContainer
 import com.respire.baseapp.ui.selectZodiac.SelectZodiacScreen
 import com.respire.baseapp.ui.theme.BaseAppTheme
 import com.respire.baseapp.ui.theme.DarkBackground
 import com.respire.baseapp.ui.theme.LightBackground
 import com.respire.baseapp.ui.themeScreen.ThemeMode
 import com.respire.baseapp.ui.themeScreen.ThemeScreen
+import com.respire.baseapp.ui.zodiacDetails.ZodiacDetailsScreen
 import com.respire.baseapp.ui.zodiacMain.ZodiacMainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -68,8 +79,23 @@ class MainActivity : ComponentActivity() {
                     ThemeMode.SYSTEM -> isSystemInDarkTheme()
                 }
             ) {
-                NavHost(navController = navController, startDestination = startScreen) {
-                    composable<Screen.ZodiacList> {
+                NavHost(
+                    navController = navController,
+                    startDestination = startScreen,
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                ) {
+                    composable<Screen.ZodiacList>(enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(500)
+                        )
+                    },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(500)
+                            )
+                        }) {
                         SelectZodiacScreen {
                             navController.navigate(Screen.ZodiacMain) {
                                 popUpTo(navController.graph.findStartDestination().id) {
@@ -78,16 +104,42 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-                    composable<Screen.ZodiacMain> { navBackResult ->
+                    composable<Screen.ZodiacMain>(
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(500)
+                            )
+                        }) { navBackResult ->
                         ZodiacMainScreen(
                             appTheme,
                             onSelectZodiac = {
                                 navController.navigate(Screen.ZodiacList)
                             }, onAppThemeClick = {
                                 navController.navigate(Screen.ThemeScreen)
+                            }, onZodiacDetailsClick = { details ->
+                                navController.navigate(Screen.ZodiacDetailsScreen(details))
                             })
                     }
-                    composable<Screen.ThemeScreen> {
+                    composable<Screen.ThemeScreen>(
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(500)
+                            )
+                        }) {
                         ThemeScreen(appTheme, { themeMode ->
                             viewModel.updateTheme(themeMode)
 //                            navController.previousBackStackEntry
@@ -97,19 +149,22 @@ class MainActivity : ComponentActivity() {
                             navController.popBackStack()
                         })
                     }
-//                    navigation<Screen.ZodiacMain>(startDestination = Screen.Daily) {
-//                        composable<Screen.Daily> {
-//                            Da(
-//                                onStartGame = { navController.navigate(route = InGame) }
-//                            )
-//                        }
-//                        composable<Screen.Settings> {
-//                            InGameScreen(
-//                                onGameWin = { navController.navigate(route = ResultsWinner) },
-//                                onGameLose = { navController.navigate(route = GameOver) }
-//                            )
-//                        }
-//                    }
+
+                    composable<Screen.ZodiacDetailsScreen>(
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(500)
+                            )
+                        }) {
+                        ZodiacDetailsScreen()
+                    }
                 }
             }
         }

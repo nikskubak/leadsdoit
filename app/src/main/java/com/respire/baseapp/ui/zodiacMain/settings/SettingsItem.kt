@@ -21,11 +21,12 @@ fun SettingsItem(
     isSwitchEnabled: Boolean? = null,
     onSwitchCheckedChanged: (Boolean) -> Unit = {}
 ) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = 16.dp, vertical = if(isSwitchEnabled != null) 12.dp else 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -39,14 +40,8 @@ fun SettingsItem(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onPrimary
-        )
-
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary
         )
 
@@ -54,6 +49,12 @@ fun SettingsItem(
             Switch(isSwitchEnabled, { isChecked ->
                 onSwitchCheckedChanged(isChecked)
             })
+        } ?: run{
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 } 

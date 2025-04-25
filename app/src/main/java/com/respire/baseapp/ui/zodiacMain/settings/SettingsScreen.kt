@@ -22,7 +22,11 @@ fun SettingsScreen(appTheme: ThemeMode, onSelectZodiac: () -> Unit, onAppThemeCl
     BaseScreen(uiState) {
         val content = (uiState as? BaseUiState.ContentState<*>)?.content
         if (content is SettingsUi) {
-            SettingsUI(appTheme, content, onSelectZodiac, onAppThemeClick, { isChecked -> viewModel.saveNotification(isChecked)})
+            SettingsUI(appTheme, content,
+                onSelectZodiac,
+                onAppThemeClick,
+                { isChecked -> viewModel.saveNotification(isChecked) },
+                { viewModel.rateApp() })
         }
     }
 }
@@ -33,7 +37,8 @@ fun SettingsUI(
     content: SettingsUi,
     onSelectZodiac: () -> Unit,
     onAppThemeClick: () -> Unit,
-    onNotificationChanged: (Boolean) -> Unit
+    onNotificationChanged: (Boolean) -> Unit,
+    onRateAppClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -85,7 +90,8 @@ fun SettingsUI(
             SettingsItem(
                 icon = R.drawable.ic_star,
                 title = "Rate App",
-                value = "★★★★★"
+                value = "★★★★★",
+                onRateAppClick
             )
         }
     }

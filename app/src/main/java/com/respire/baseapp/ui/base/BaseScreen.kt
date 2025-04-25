@@ -14,27 +14,39 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun BaseScreen(uiState: BaseUiState, content: @Composable (uiState : BaseUiState) -> Unit = {}) {
+fun BaseScreen(uiState: BaseUiState, content: @Composable (uiState: BaseUiState) -> Unit = {}) {
     Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        AnimatedVisibility(
-            visible = uiState is BaseUiState.LoadingState,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            CircularProgressIndicator()
+        when (uiState) {
+            is BaseUiState.LoadingState -> {
+                CircularProgressIndicator()
+            }
+
+            is BaseUiState.ContentState<*> -> {
+                content(uiState)
+            }
+
+            else -> {}
         }
 
-        AnimatedVisibility(
-            visible = uiState is BaseUiState.ContentState<*>,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            content(uiState)
-        }
+//        AnimatedVisibility(
+//            visible = uiState is BaseUiState.LoadingState,
+//            enter = fadeIn(),
+//            exit = fadeOut()
+//        ) {
+//            CircularProgressIndicator()
+//        }
+//
+//        AnimatedVisibility(
+//            visible = uiState is BaseUiState.ContentState<*>,
+//            enter = fadeIn(),
+//            exit = fadeOut()
+//        ) {
+//            content(uiState)
+//        }
     }
 }

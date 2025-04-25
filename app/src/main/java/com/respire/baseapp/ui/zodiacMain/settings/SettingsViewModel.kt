@@ -1,9 +1,13 @@
 package com.respire.baseapp.ui.zodiacMain.settings
 
 import android.app.Application
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.respire.baseapp.BuildConfig
 import com.respire.baseapp.domain.model.SettingsEntity
 import com.respire.baseapp.domain.model.ZodiacEntity
 import com.respire.baseapp.domain.useCases.SelectedZodiacUseCase
@@ -79,5 +83,22 @@ class SettingsViewModel @Inject constructor(
         settingsUseCase.saveSettings(SettingsEntity(isNotificationEnabled = checked))
             .onEach { getSettings() }
             .launchIn(viewModelScope)
+    }
+
+    fun rateApp() {
+        try {
+            // Try to open Play Store app first
+            app.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        } catch (e: ActivityNotFoundException) {
+            // If Play Store app is not available, open in browser
+            app.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                data =
+                    Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        }
     }
 }

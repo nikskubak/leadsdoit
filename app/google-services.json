@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:336622626611:android:74829195595c7d9b624046",
+        "android_client_info": {
+          "package_name": "com.androsuperbooster.horoscope"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfCWvLUKSNbcFJOOitVhsFFFNCy5AgUkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:336622626611:android:f0059115eb734a44624046",
         "android_client_info": {
           "package_name": "com.respire.baseapp"

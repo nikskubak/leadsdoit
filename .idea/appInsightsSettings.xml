@@ -8,8 +8,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.respire.baseapp" />
-                  <option name="mobileSdkAppId" value="1:336622626611:android:f0059115eb734a44624046" />
+                  <option name="appId" value="com.androsuperbooster.horoscope" />
+                  <option name="mobileSdkAppId" value="1:336622626611:android:74829195595c7d9b624046" />
                   <option name="projectId" value="baseapp-131b6" />
                   <option name="projectNumber" value="336622626611" />
                 </ConnectionSetting>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Burçlar</string>
+    <string name="select_sign">Burcun ne? 🌟</string>
+    <string name="daily">Günlük</string>
+    <string name="settings">Ayarlar</string>
+    <string name="app_theme">Uygulama teması</string>
+    <string name="light">Açık</string>
+    <string name="dark">Koyu</string>
+    <string name="system">Sistem</string>
+    <string name="selected_zodiac">Seçilen burç</string>
+    <string name="are_you_sure">Çıkmak istediğinizden emin misiniz?</string>
+    <string name="no">Hayır</string>
+    <string name="yes">Evet</string>
+    <string name="rate_app">Uygulamayı değerlendir</string>
+    <string name="notifications">Bildirimler</string>
+</resources>

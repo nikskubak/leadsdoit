@@ -23,6 +23,7 @@ nav = "2.8.9"
 lottieVersion = "6.6.6"
 googleServices = "4.4.2"
 hawk = "2.0.1"
+installreferrer = "2.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,7 +60,10 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging-display" }
+firebase-cloudmessaging = { group = "com.google.firebase", name = "firebase-messaging" }
 hawk = { group = "com.orhanobut", name = "hawk" , version.ref = "hawk" }
+installreferrer = { group = "com.android.installreferrer", name = "installreferrer" , version.ref = "installreferrer" }
 
 
 [plugins]

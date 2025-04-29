@@ -9,17 +9,32 @@ plugins {
 }
 
 android {
-    namespace = "com.respire.baseapp"
+    namespace = "com.androsuperbooster.horoscope"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.respire.baseapp"
+        applicationId = "com.androsuperbooster.horoscope"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storeFile = file("$rootDir/keystore/debug.keystore")
+            storePassword = "android"
+        }
+        create("release") {
+            keyAlias = "horoscope"
+            keyPassword = "horoscope"
+            storeFile = file("$rootDir/keystore/horoscope-keystore.jks")
+            storePassword = "horoscope"
+        }
     }
 
     buildTypes {
@@ -98,12 +113,17 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.inappmessaging)
+    implementation(libs.firebase.cloudmessaging)
 
     //Lottie
-    implementation(libs.lottie.compose)
+//    implementation(libs.lottie.compose)
 
     //Hawk
     implementation(libs.hawk)
+
+    //Install referrer
+    implementation(libs.installreferrer)
 
 
 //    implementation(project(":core-features"))

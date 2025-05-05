@@ -1,7 +1,9 @@
 package com.androsuperbooster.horoscope.ui.base
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +26,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,6 +56,7 @@ import kotlin.reflect.typeOf
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private lateinit var navController: NavHostController
     val viewModel: BaseViewModel by viewModels<BaseViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +83,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        Log.e("onNewIntent", intent.data.toString())
+
+        super.onNewIntent(intent)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(Uri.parse(intent.data.toString()))
+            .build()
+
+        navController.navigate(
+            request,
+            navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+        )
+    }
+
     private fun requestPermissioan() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -98,7 +118,7 @@ class MainActivity : ComponentActivity() {
 
     private fun content(startScreen: Screen) {
         setContent {
-            val navController = rememberNavController()
+            navController = rememberNavController()
             val appTheme by viewModel.themeState.collectAsState()
             BaseAppTheme(
                 darkTheme = when (appTheme) {

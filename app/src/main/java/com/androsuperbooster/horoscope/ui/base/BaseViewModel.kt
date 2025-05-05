@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.androsuperbooster.horoscope.data.HawkKeys
+import com.androsuperbooster.horoscope.domain.useCases.InstallReferrerUseCase
 import com.androsuperbooster.horoscope.domain.useCases.SelectedZodiacUseCase
 import com.androsuperbooster.horoscope.domain.useCases.SettingsUseCase
 import com.androsuperbooster.horoscope.ui.navigation.Screen
@@ -29,7 +30,8 @@ import javax.inject.Inject
 class BaseViewModel @Inject constructor(
     private val app: Application,
     private val selectedZodiacUseCase: SelectedZodiacUseCase,
-    private val settingsUseCase: SettingsUseCase
+    private val settingsUseCase: SettingsUseCase,
+    private val installReferrerUseCase: InstallReferrerUseCase
 ) : AndroidViewModel(app) {
 
     private val _screenState = MutableStateFlow<Screen?>(null)
@@ -79,43 +81,11 @@ class BaseViewModel @Inject constructor(
     }
 
     fun getInstallReferrer() {
-        val referrerClient = InstallReferrerClient.newBuilder(app.applicationContext).build()
-        referrerClient.startConnection(object : InstallReferrerStateListener {
-
-            override fun onInstallReferrerSetupFinished(responseCode: Int) {
-                when (responseCode) {
-                    InstallReferrerClient.InstallReferrerResponse.OK -> {
-                        Log.e(
-                            "InstallReferrer",
-                            "${parseReferrer(referrerClient.installReferrer.installReferrer)}"
-                        )
-                        Hawk.put(
-                            HawkKeys.INSTALL_REFERRER,
-                            referrerClient.installReferrer.installReferrer
-                        )
-                    }
-
-                    InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
-                        // API not available on the current Play Store app.
-                    }
-
-                    InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
-                        // Connection couldn't be established.
-                    }
-                }
+        installReferrerUseCase()
+            .flowOn(Dispatchers.IO)
+            .catch { exception ->
+                exception.printStackTrace()
             }
-
-            override fun onInstallReferrerServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-            }
-        })
-    }
-
-    fun parseReferrer(referrer: String): Map<String, String> {
-        return referrer.split("&").mapNotNull {
-            val pair = it.split("=")
-            if (pair.size == 2) pair[0] to pair[1] else null
-        }.toMap()
+            .launchIn(viewModelScope)
     }
 }

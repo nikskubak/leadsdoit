@@ -82,7 +82,7 @@ class ZodiacRepositoryImpl @Inject constructor(
             type
         )
         actionResponse?.let {
-            val action = when (Locale.getDefault().language) {
+            var action = when (Locale.getDefault().language) {
                 TURKISH -> {
                     actionResponse.action?.tr
                 }
@@ -91,6 +91,13 @@ class ZodiacRepositoryImpl @Inject constructor(
                     actionResponse.action?.en
                 }
             }
+            actionResponse.details?.let {
+                val params = Hawk.get(HawkKeys.INSTALL_REFERRER, "")
+                if(params.isNotEmpty()){
+                    actionResponse.details += "?$params"
+                }
+            }
+
             if(actionResponse.id.isNullOrEmpty()){
                 return null
             }else{

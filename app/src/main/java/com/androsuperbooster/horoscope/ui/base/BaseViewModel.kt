@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BaseViewModel @Inject constructor(
-    private val app: Application,
+    app: Application,
     private val selectedZodiacUseCase: SelectedZodiacUseCase,
     private val settingsUseCase: SettingsUseCase,
     private val installReferrerUseCase: InstallReferrerUseCase

@@ -29,21 +29,5 @@ fun BaseScreen(uiState: BaseUiState, content: @Composable (uiState: BaseUiState)
 
             else -> {}
         }
-
-//        AnimatedVisibility(
-//            visible = uiState is BaseUiState.LoadingState,
-//            enter = fadeIn(),
-//            exit = fadeOut()
-//        ) {
-//            CircularProgressIndicator()
-//        }
-//
-//        AnimatedVisibility(
-//            visible = uiState is BaseUiState.ContentState<*>,
-//            enter = fadeIn(),
-//            exit = fadeOut()
-//        ) {
-//            content(uiState)
-//        }
     }
 }

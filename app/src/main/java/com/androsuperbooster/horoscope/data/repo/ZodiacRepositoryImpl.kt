@@ -8,6 +8,7 @@ import com.orhanobut.hawk.Hawk
 import com.androsuperbooster.horoscope.R
 import com.androsuperbooster.horoscope.data.HawkKeys
 import com.androsuperbooster.horoscope.data.HawkKeys.FIRST_LAUNCH_WEEK
+import com.androsuperbooster.horoscope.data.InstallReferrerConstants.UTM_SOURCE
 import com.androsuperbooster.horoscope.data.ZodiacSignIds
 import com.androsuperbooster.horoscope.data.sources.network.models.response.RemoteConfigActionResponse
 import com.androsuperbooster.horoscope.data.sources.network.models.response.RemoteConfigZodiacsResponse
@@ -77,8 +78,10 @@ class ZodiacRepositoryImpl @Inject constructor(
 
     private fun zodiacAction(): Action? {
         val type = object : TypeToken<RemoteConfigActionResponse?>() {}.type
+        val string = remoteConfig.getString(HOROSCOPE_DETAILS)
+        Log.e("string", string)
         val actionResponse = gson.fromJson<RemoteConfigActionResponse?>(
-            remoteConfig.getString(HOROSCOPE_DETAILS),
+            string,
             type
         )
         actionResponse?.let {
@@ -91,17 +94,24 @@ class ZodiacRepositoryImpl @Inject constructor(
                     actionResponse.action?.en
                 }
             }
+            val params = Hawk.get(HawkKeys.INSTALL_REFERRER, "")
             actionResponse.details?.let {
-                val params = Hawk.get(HawkKeys.INSTALL_REFERRER, "")
-                if(params.isNotEmpty()){
+                if (params.isNotEmpty()) {
                     actionResponse.details += "?$params"
                 }
             }
 
-            if(actionResponse.id.isNullOrEmpty()){
+            if (actionResponse.id.isNullOrEmpty()) {
                 return null
-            }else{
-                return Action(actionResponse.id, actionResponse.details, action)
+            } else {
+                if (!actionResponse.accessOnlyFor.isNullOrEmpty() && actionResponse.accessOnlyFor.contains(
+                        parseReferrer(params)[UTM_SOURCE]
+                    )
+                ) {
+                    return Action(actionResponse.id, actionResponse.details, action)
+                } else {
+                    return null
+                }
             }
         } ?: run {
             return null
@@ -170,5 +180,12 @@ class ZodiacRepositoryImpl @Inject constructor(
             Hawk.put(FIRST_LAUNCH_WEEK, currentWeekOfYear)
         }
         return Math.abs(currentWeekOfYear - firstLaunchWeekOfYear)
+    }
+
+    fun parseReferrer(referrer: String): Map<String, String> {
+        return referrer.split("&").mapNotNull {
+            val pair = it.split("=")
+            if (pair.size == 2) pair[0] to pair[1] else null
+        }.toMap()
     }
 }

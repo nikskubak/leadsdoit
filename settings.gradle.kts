@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "BaseApp"
 include(":app")
-//include(":core-features")
+include(":core-features")
+include(":core")
+include(":feature-horoscope")

@@ -10,6 +10,6 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, com.respire.mvi.ui.base.MainActivity::class.java))
     }
 }

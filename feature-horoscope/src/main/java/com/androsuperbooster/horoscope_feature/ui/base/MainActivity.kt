@@ -50,7 +50,6 @@ import com.androsuperbooster.horoscope_feature.ui.zodiacMain.ZodiacMainScreen
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
 @AndroidEntryPoint

@@ -67,7 +67,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":feature-horoscope"))
+//    implementation(project(":feature-horoscope"))
     implementation(project(":mvi"))
 
     //Hilt

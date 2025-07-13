@@ -89,8 +89,8 @@ dependencies {
     api(libs.firebase.inappmessaging)
     api(libs.firebase.cloudmessaging)
 
-    //Lottie
-//    implementation(libs.lottie.compose)
+    //Glide
+    api(libs.glide)
 
     //Hawk
     api(libs.hawk)

@@ -25,6 +25,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"4e5d8d662816e9fbb308967503ab926c\"")
+            buildConfigField("String", "API_HOST", "\"v3.football.api-sports.io\"")
+            buildConfigField("String", "URL", "\"https://v3.football.api-sports.io/\"")
+        }
+        debug {
+            buildConfigField("String", "API_KEY", "\"4e5d8d662816e9fbb308967503ab926c\"")
+            buildConfigField("String", "API_HOST", "\"v3.football.api-sports.io\"")
+            buildConfigField("String", "URL", "\"https://v3.football.api-sports.io/\"")
         }
     }
     compileOptions {
@@ -36,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

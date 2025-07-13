@@ -2,7 +2,8 @@ package com.respire.mvi.ui.di
 
 import android.content.Context
 import androidx.room.Room
-import com.respire.mvi.data.dataSource.InMemorySource
+import com.respire.mvi.data.dataSource.database.FootballDatabase
+import com.respire.mvi.data.dataSource.database.dao.MatchesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +23,19 @@ open class DataModule {
 
     @Singleton
     @Provides
-    open fun providesInMemory(context: Context): InMemorySource {
-        return InMemorySource()
+    open fun providesFootballDatabase(context: Context): FootballDatabase {
+        return Room
+            .databaseBuilder(
+                context = context.applicationContext,
+                klass = FootballDatabase::class.java,
+                name = "football_matches_db"
+            )
+            .build()
     }
+
+    @Singleton
+    @Provides
+    fun providesMatchesDao(dataBase: FootballDatabase): MatchesDao =
+        dataBase.getMatchesDao()
 
 }

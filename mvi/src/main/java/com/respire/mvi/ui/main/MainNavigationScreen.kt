@@ -42,8 +42,9 @@ sealed class TabItem(val route: String, val title: String, val icon: @Composable
 
 @Composable
 fun MainNavigationScreen(
-    onMatchSelected: (matchId: Int) -> Unit = {},
-    onSettingsAction: (action: String) -> Unit = {}
+    onThemeClicked: () -> Unit = {},
+    onPrivacyClicked: () -> Unit = {},
+    onMatchClicked: (id: Int) -> Unit = {}
 ) {
     var selectedTab: TabItem by remember { mutableStateOf(TabItem.Matches) }
 
@@ -69,7 +70,7 @@ fun MainNavigationScreen(
                 exit = fadeOut()
             ) {
                 FootballMatchesScreen(
-                    onItemSelected = onMatchSelected,
+                    onItemSelected = onMatchClicked,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -81,7 +82,8 @@ fun MainNavigationScreen(
                 exit = fadeOut()
             ) {
                 SettingsScreen(
-                    onAction = onSettingsAction,
+                    onThemeClicked = onThemeClicked,
+                    onPrivacyClicked = onPrivacyClicked,
                     modifier = Modifier.fillMaxSize()
                 )
             }

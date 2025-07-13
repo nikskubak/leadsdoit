@@ -1,6 +1,7 @@
 package com.respire.mvi.ui.footballMatches.state
 
 import com.respire.mvi.domain.model.FixtureEntity
+import java.util.Date
 
 enum class FilterType(val displayName: String) {
     ALL("All"),
@@ -14,7 +15,8 @@ data class FootballMatchesState(
     val isRefreshing: Boolean = false,
     val matches: List<FixtureEntity> = emptyList(),
     val error: String? = null,
-    val selectedFilter: FilterType = FilterType.ALL
+    val selectedFilter: FilterType = FilterType.ALL,
+    val selectedDate: Date = Date()
 )
 
 sealed class FootballMatchesEffect {
@@ -26,4 +28,5 @@ sealed class FootballMatchesEvent{
     data class FilterChangedEvent(val filterType: FilterType) : FootballMatchesEvent()
     object OnRefreshedListEvent: FootballMatchesEvent()
     object LoadListEvent : FootballMatchesEvent()
+    data class OnDateSelected(val date: Date) : FootballMatchesEvent()
 }

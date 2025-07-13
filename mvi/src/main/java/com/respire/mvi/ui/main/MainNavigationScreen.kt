@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.respire.mvi.ui.footballMatches.FootballMatchesScreen
 import com.respire.mvi.ui.settings.SettingsScreen
 
@@ -60,8 +61,7 @@ fun MainNavigationScreen(
             }
         }
     ) { paddingValues ->
-        paddingValues
-        Box(modifier = Modifier) {
+        Box(modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding() - 24.dp)) {
             // Matches Screen
             AnimatedVisibility(
                 visible = selectedTab is TabItem.Matches,

@@ -32,6 +32,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.ripple
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import android.app.DatePickerDialog
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,6 +67,9 @@ import com.respire.mvi.ui.footballMatches.state.FootballMatchesEvent
 import com.respire.mvi.ui.footballMatches.state.FootballMatchesState
 import java.text.SimpleDateFormat
 import java.util.Locale
+import androidx.compose.runtime.rememberUpdatedState
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun FootballMatchesScreen(
@@ -79,7 +90,13 @@ fun FootballMatchesUI(
     modifier: Modifier = Modifier
 ) {
     val refreshState = rememberPullToRefreshState()
-
+    val context = LocalContext.current
+    val selectedDate = state.selectedDate
+    val readableDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    val formattedDate = readableDateFormat.format(selectedDate)
+    val onDateSelected = rememberUpdatedState<(Date) -> Unit> { date ->
+        onEvent(FootballMatchesEvent.OnDateSelected(date))
+    }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -89,7 +106,27 @@ fun FootballMatchesUI(
                         containerColor = MaterialTheme.colorScheme.surface,
                         titleContentColor = MaterialTheme.colorScheme.primary
                     ),
-                title = { Text(stringResource(R.string.football_matches_title)) },
+                title = { Text(formattedDate) },
+                actions = {
+                    IconButton(onClick = {
+                        val selected = Calendar.getInstance().apply { time = selectedDate }
+                        DatePickerDialog(
+                            context,
+                            { _, year, month, dayOfMonth ->
+                                onDateSelected.value(Calendar.getInstance().apply {
+                                    set(Calendar.YEAR, year)
+                                    set(Calendar.MONTH, month)
+                                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                                }.time)
+                            },
+                            selected.get(Calendar.YEAR),
+                            selected.get(Calendar.MONTH),
+                            selected.get(Calendar.DAY_OF_MONTH)
+                        ).show()
+                    }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Select date")
+                    }
+                }
             )
         },
         content = { padding ->
@@ -103,7 +140,6 @@ fun FootballMatchesUI(
                 if (state.isLoading && !state.isRefreshing) {
                     CircularProgressIndicator()
                 } else {
-
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -121,26 +157,32 @@ fun FootballMatchesUI(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            PullToRefreshBox(
-                                modifier = Modifier.fillMaxSize(),
-                                state = refreshState,
-                                isRefreshing = state.isRefreshing,
-                                onRefresh = {
-                                    onEvent(FootballMatchesEvent.OnRefreshedListEvent)
-                                },
-                            ) {
-                                // Matches List
-                                LazyColumn(
+                            AnimatedVisibility(state.matches.isNotEmpty()) {
+                                PullToRefreshBox(
                                     modifier = Modifier.fillMaxSize(),
-                                    // Adds 8.dp of space vertically between each item
-                                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                                    // Optional: if you also want padding around the whole list
-                                    contentPadding = PaddingValues(horizontal = 16.dp)
+                                    state = refreshState,
+                                    isRefreshing = state.isRefreshing,
+                                    onRefresh = {
+                                        onEvent(FootballMatchesEvent.OnRefreshedListEvent)
+                                    },
                                 ) {
-                                    items(state.matches.size) { index ->
-                                        MatchItem(state.matches[index], onEvent)
+                                    // Matches List
+                                    LazyColumn(
+                                        modifier = Modifier.fillMaxSize(),
+                                        // Adds 8.dp of space vertically between each item
+                                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                                        // Optional: if you also want padding around the whole list
+                                        contentPadding = PaddingValues(horizontal = 16.dp)
+                                    ) {
+                                        items(state.matches.size) { index ->
+                                            MatchItem(state.matches[index], onEvent)
+                                        }
                                     }
                                 }
+                            }
+
+                            AnimatedVisibility(state.matches.isEmpty(), modifier = Modifier.fillMaxSize()) {
+                                Text(text = stringResource(R.string.empty_matches), textAlign = TextAlign.Center)
                             }
                         }
                     }

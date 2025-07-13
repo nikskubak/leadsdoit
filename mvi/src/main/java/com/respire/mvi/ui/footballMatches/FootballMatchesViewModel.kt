@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,14 +45,15 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
         getMatches()
     }
 
-    private fun getMatches(refreshing: Boolean = false) {
-        matchesUseCase(dateFormat.format(Date()))
+    private fun getMatches(date: Date? = null, refreshing: Boolean = false) {
+        val dateToUse = date ?: _uiState.value.selectedDate
+        matchesUseCase(dateFormat.format(dateToUse))
             .flowOn(Dispatchers.IO)
             .onStart {
                 if (!refreshing)
-                    _uiState.value = _uiState.value.copy(isLoading = true)
+                    _uiState.value = _uiState.value.copy(isLoading = true, error = null)
                 else
-                    _uiState.value = _uiState.value.copy(isRefreshing = true)
+                    _uiState.value = _uiState.value.copy(isRefreshing = true, error = null)
             }
             .onEach {
                 it.onSuccess { matches ->
@@ -60,12 +62,16 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         isRefreshing = false,
-                        matches = filteredMatches
+                        matches = filteredMatches,
+                        error = null
                     )
                 }
                 it.onFailure {
+                    originalMatches = emptyList()
                     _uiState.value = _uiState.value.copy(
-                        error = it.message, isLoading = false,
+                        matches = emptyList(),
+                        error = it.message,
+                        isLoading = false,
                         isRefreshing = false
                     )
                 }
@@ -85,7 +91,8 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
                 val filteredMatches = getFilteredMatches(originalMatches, event.filterType)
                 _uiState.value = _uiState.value.copy(
                     selectedFilter = event.filterType,
-                    matches = filteredMatches
+                    matches = filteredMatches,
+                    error = null
                 )
             }
 
@@ -94,7 +101,12 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
             }
 
             is FootballMatchesEvent.OnRefreshedListEvent -> {
-                getMatches(true)
+                getMatches(refreshing = true)
+            }
+
+            is FootballMatchesEvent.OnDateSelected -> {
+                _uiState.value = _uiState.value.copy(selectedDate = event.date)
+                getMatches(date = event.date)
             }
         }
     }

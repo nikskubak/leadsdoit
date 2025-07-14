@@ -5,15 +5,14 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.google.services)
 }
 
 android {
-    namespace = "com.androsuperbooster.horoscope"
+    namespace = "com.leadsdoit.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.androsuperbooster.horoscope"
+        applicationId = "com.leadsdoit.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 6

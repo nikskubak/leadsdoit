@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.google.services)
 }
 
 android {
@@ -81,13 +80,6 @@ dependencies {
     //Navigation
     api(libs.serialization)
     api(libs.navigation.compose)
-
-    //Firebase
-    api(platform(libs.firebase.bom))
-    api(libs.firebase.config)
-    api(libs.firebase.analytics)
-    api(libs.firebase.inappmessaging)
-    api(libs.firebase.cloudmessaging)
 
     //Glide
     api(libs.glide)

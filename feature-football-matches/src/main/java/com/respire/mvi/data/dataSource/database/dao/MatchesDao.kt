@@ -12,17 +12,17 @@ import com.respire.mvi.data.dataSource.database.models.MatchesDB
 interface MatchesDao {
 
     @Query("SELECT * FROM matches")
-    suspend fun getCurrencies(): List<MatchesDB>
+    suspend fun getMatches(): List<MatchesDB>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCurrencies(currencies: List<MatchesDB>)
+    suspend fun insertMatches(matches: List<MatchesDB>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCurrency(matchesDB: MatchesDB)
+    suspend fun insertMatch(matchesDB: MatchesDB)
 
     @Update
-    suspend fun updateCurrency(matchesDB: MatchesDB)
+    suspend fun updateMatch(matchesDB: MatchesDB)
 
     @Query("DELETE FROM matches WHERE id = :id")
-    suspend fun removeCurrency(id: Long)
+    suspend fun removeMatch(id: Long)
 }

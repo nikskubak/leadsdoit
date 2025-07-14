@@ -50,12 +50,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         requestPermissioan()
-        content(Screen.MainScreen)
+        showContent(Screen.MainScreen)
     }
 
     override fun onNewIntent(intent: Intent) {
-        Log.e("onNewIntent", intent.data.toString())
-
         super.onNewIntent(intent)
         val request = NavDeepLinkRequest.Builder
             .fromUri(Uri.parse(intent.data.toString()))
@@ -86,7 +84,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun content(startScreen: Screen) {
+    private fun showContent(startScreen: Screen) {
         setContent {
             navController = rememberNavController()
             val appTheme by viewModel.themeState.collectAsState()
@@ -119,8 +117,8 @@ class MainActivity : ComponentActivity() {
                             onThemeClicked = {
                                 navController.navigate(Screen.ThemeScreen)
                             },
-                            onPrivacyClicked = {
-                                navController.navigate(Screen.PrivacyScreen("https://leadsdoit.com/"))
+                            onPrivacyClicked = { url ->
+                                navController.navigate(Screen.PrivacyScreen(url))
                             },
                             onMatchClicked = {
 

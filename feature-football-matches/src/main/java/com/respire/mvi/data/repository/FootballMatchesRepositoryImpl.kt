@@ -1,5 +1,6 @@
 package com.respire.mvi.data.repository
 
+import com.respire.mvi.data.dataSource.database.dao.MatchesDao
 import com.respire.mvi.data.dataSource.network.FootballMatchesApi
 import com.respire.mvi.data.dataSource.network.models.mapper.FootballMatchesMapper
 import com.respire.mvi.data.dataSource.network.models.mapper.FootballMatchesMapper.toEntity
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class FootballMatchesRepositoryImpl @Inject constructor(
-    private val footballMatchesApi: FootballMatchesApi
+    private val footballMatchesApi: FootballMatchesApi,
+    private val matchesDao: MatchesDao
 ) : FootballMatchesRepository {
     
     override fun getMatches(date: String): Flow<Result<List<FixtureEntity>>> = flow {

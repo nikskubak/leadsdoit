@@ -1,4 +1,4 @@
-package com.androsuperbooster.horoscope.main
+package com.leadsdoit.app.main
 
 import android.content.Intent
 import android.os.Bundle

@@ -23,7 +23,7 @@ open class DataModule {
 
     @Singleton
     @Provides
-    open fun providesFootballDatabase(context: Context): FootballDatabase {
+    open fun providesFootballDatabase( @Named("appContext") context: Context): FootballDatabase {
         return Room
             .databaseBuilder(
                 context = context.applicationContext,

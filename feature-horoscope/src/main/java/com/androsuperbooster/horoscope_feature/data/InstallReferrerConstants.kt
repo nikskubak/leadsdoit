@@ -1,9 +1,0 @@
-package com.androsuperbooster.horoscope_feature.data
-
-object InstallReferrerConstants {
-    const val UTM_SOURCE = "utm_source"
-    const val UTM_MEDIUM = "utm_medium"
-    const val UTM_CAMPAIGN = "utm_campaign"
-    const val UTM_TERM = "utm_term"
-    const val UTM_CONTENT= "utm_content"
-}

@@ -1,7 +1,0 @@
-package com.androsuperbooster.horoscope_feature.ui.base
-
-sealed class BaseUiState {
-    object LoadingState : BaseUiState()
-    class ErrorState(var exception: Throwable?) : BaseUiState()
-    open class ContentState<T>(var content: T? = null) : BaseUiState()
-}

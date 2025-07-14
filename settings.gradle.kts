@@ -21,7 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "BaseApp"
 include(":app")
-include(":core-features")
 include(":core")
-include(":feature-horoscope")
-include(":mvi")
+include(":feature-football-matches")

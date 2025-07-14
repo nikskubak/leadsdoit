@@ -1,14 +1,14 @@
-package com.respire.mvi.ui.footballMatches
+package com.respire.mvi.ui.screens.footballMatchesScreen
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.respire.mvi.domain.model.FixtureEntity
 import com.respire.mvi.domain.useCase.FootballMatchesUseCase
-import com.respire.mvi.ui.footballMatches.state.FilterType
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesEffect
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesEvent
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesState
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FilterType
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesEffect
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesEvent
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,9 +50,9 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
             .flowOn(Dispatchers.IO)
             .onStart {
                 if (!refreshing)
-                    _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+                    _uiState.value = _uiState.value.copy(isLoading = true)
                 else
-                    _uiState.value = _uiState.value.copy(isRefreshing = true, error = null)
+                    _uiState.value = _uiState.value.copy(isRefreshing = true)
             }
             .onEach {
                 it.onSuccess { matches ->
@@ -62,18 +61,19 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         isRefreshing = false,
-                        matches = filteredMatches,
-                        error = null
+                        matches = filteredMatches
                     )
                 }
                 it.onFailure {
                     originalMatches = emptyList()
                     _uiState.value = _uiState.value.copy(
                         matches = emptyList(),
-                        error = it.message,
                         isLoading = false,
                         isRefreshing = false
                     )
+                    viewModelScope.launch {
+                        _uiEffect.emit(FootballMatchesEffect.ErrorEffect(it.message.orEmpty()))
+                    }
                 }
             }
             .launchIn(viewModelScope)
@@ -91,8 +91,7 @@ class FootballMatchesViewModel @Inject constructor(val matchesUseCase: FootballM
                 val filteredMatches = getFilteredMatches(originalMatches, event.filterType)
                 _uiState.value = _uiState.value.copy(
                     selectedFilter = event.filterType,
-                    matches = filteredMatches,
-                    error = null
+                    matches = filteredMatches
                 )
             }
 

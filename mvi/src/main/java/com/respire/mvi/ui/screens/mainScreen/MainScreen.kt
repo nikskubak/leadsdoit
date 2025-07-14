@@ -1,4 +1,4 @@
-package com.respire.mvi.ui.main
+package com.respire.mvi.ui.screens.mainScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -10,21 +10,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.respire.mvi.ui.footballMatches.FootballMatchesScreen
-import com.respire.mvi.ui.settings.SettingsScreen
+import com.respire.mvi.ui.base.ui.theme.ThemeMode
+import com.respire.mvi.ui.screens.footballMatchesScreen.FootballMatchesScreen
+import com.respire.mvi.ui.screens.settingsScreen.SettingsScreen
 
 sealed class TabItem(val route: String, val title: String, val icon: @Composable () -> Unit) {
     object Matches : TabItem(
@@ -32,7 +32,7 @@ sealed class TabItem(val route: String, val title: String, val icon: @Composable
         title = "Matches",
         icon = { Icon(Icons.Default.Home, contentDescription = "Matches") }
     )
-    
+
     object Settings : TabItem(
         route = "settings",
         title = "Settings",
@@ -41,12 +41,18 @@ sealed class TabItem(val route: String, val title: String, val icon: @Composable
 }
 
 @Composable
-fun MainNavigationScreen(
+fun MainScreen(
+    appTheme: ThemeMode,
     onThemeClicked: () -> Unit = {},
-    onPrivacyClicked: () -> Unit = {},
+    onPrivacyClicked: (url : String) -> Unit = {},
     onMatchClicked: (id: Int) -> Unit = {}
 ) {
-    var selectedTab: TabItem by remember { mutableStateOf(TabItem.Matches) }
+    var currentScreenIndex by rememberSaveable { mutableIntStateOf(0) }
+
+    val items = listOf(
+        TabItem.Matches,
+        TabItem.Settings
+    )
 
     Scaffold(
         bottomBar = {
@@ -55,8 +61,8 @@ fun MainNavigationScreen(
                     NavigationBarItem(
                         icon = tab.icon,
                         label = { Text(tab.title) },
-                        selected = selectedTab == tab,
-                        onClick = { selectedTab = tab }
+                        selected = items[currentScreenIndex] == tab,
+                        onClick = { currentScreenIndex = items.indexOf(tab) }
                     )
                 }
             }
@@ -65,7 +71,7 @@ fun MainNavigationScreen(
         Box(modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding() - 24.dp)) {
             // Matches Screen
             AnimatedVisibility(
-                visible = selectedTab is TabItem.Matches,
+                visible = items[currentScreenIndex] is TabItem.Matches,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
@@ -77,11 +83,12 @@ fun MainNavigationScreen(
 
             // Settings Screen
             AnimatedVisibility(
-                visible = selectedTab is TabItem.Settings,
+                visible = items[currentScreenIndex] is TabItem.Settings,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
                 SettingsScreen(
+                    appTheme = appTheme,
                     onThemeClicked = onThemeClicked,
                     onPrivacyClicked = onPrivacyClicked,
                     modifier = Modifier.fillMaxSize()
@@ -94,5 +101,5 @@ fun MainNavigationScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainNavigationScreenPreview() {
-    MainNavigationScreen({}, {})
+    MainScreen(ThemeMode.DARK, {}, {}, {})
 }

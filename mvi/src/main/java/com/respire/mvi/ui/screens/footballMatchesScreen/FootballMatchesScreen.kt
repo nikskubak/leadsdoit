@@ -1,4 +1,4 @@
-package com.respire.mvi.ui.footballMatches
+package com.respire.mvi.ui.screens.footballMatchesScreen
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -36,8 +36,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import android.app.DatePickerDialog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
@@ -45,6 +43,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,13 +60,14 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.respire.mvi.R
 import com.respire.mvi.domain.model.FixtureEntity
-import com.respire.mvi.ui.footballMatches.state.FilterType
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesEffect
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesEvent
-import com.respire.mvi.ui.footballMatches.state.FootballMatchesState
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FilterType
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesEffect
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesEvent
+import com.respire.mvi.ui.screens.footballMatchesScreen.state.FootballMatchesState
 import java.text.SimpleDateFormat
 import java.util.Locale
 import androidx.compose.runtime.rememberUpdatedState
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
@@ -78,7 +78,7 @@ fun FootballMatchesScreen(
 ) {
     val viewModel = hiltViewModel<FootballMatchesViewModel>()
     val state by viewModel.uiState.collectAsState()
-    observeEffects(viewModel, onItemSelected)
+    ObserveEffects(viewModel, onItemSelected)
     FootballMatchesUI(state, viewModel::onEvent, modifier)
 }
 
@@ -181,14 +181,17 @@ fun FootballMatchesUI(
                                 }
                             }
 
-                            AnimatedVisibility(state.matches.isEmpty(), modifier = Modifier.fillMaxSize()) {
-                                Text(text = stringResource(R.string.empty_matches), textAlign = TextAlign.Center)
+                            AnimatedVisibility(
+                                state.matches.isEmpty(),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.empty_matches),
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
                     }
-                }
-                state.error?.let {
-                    Toast.makeText(LocalContext.current, it, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -206,14 +209,14 @@ fun FilterChips(
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FilterType.values().forEach { filterType ->
+        FilterType.entries.forEach { filterType ->
             FilterChip(
                 onClick = {
                     onFilterChanged(filterType)
                 },
                 label = {
                     Text(
-                        text = filterType.displayName,
+                        text = stringResource(filterType.nameRes),
                         style = MaterialTheme.typography.labelMedium
                     )
                 },
@@ -285,7 +288,7 @@ fun MatchItem(fixtureEntity: FixtureEntity, onEvent: (event: FootballMatchesEven
                                 .background(Color(0xFF4CAF50))
                         )
                         Text(
-                            text = "LIVE",
+                            text = stringResource(R.string.live_caps),
                             style = MaterialTheme.typography.labelMedium,
                             color = Color(0xFF4CAF50),
                             fontWeight = FontWeight.Bold
@@ -434,12 +437,17 @@ fun MatchItem(fixtureEntity: FixtureEntity, onEvent: (event: FootballMatchesEven
 }
 
 @Composable
-fun observeEffects(viewModel: FootballMatchesViewModel, onItemSelected: (id: Int) -> Unit) {
+fun ObserveEffects(viewModel: FootballMatchesViewModel, onItemSelected: (id: Int) -> Unit) {
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect {
             when (it) {
                 is FootballMatchesEffect.SelectItemEvent -> {
                     onItemSelected(it.matchId)
+                }
+
+                is FootballMatchesEffect.ErrorEffect -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

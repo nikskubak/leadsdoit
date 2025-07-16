@@ -4,25 +4,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.respire.mvi.data.dataSource.database.models.MatchesDB
-
+import com.respire.mvi.data.dataSource.database.models.FixtureDB
 
 @Dao
 interface MatchesDao {
-
-    @Query("SELECT * FROM matches")
-    suspend fun getMatches(): List<MatchesDB>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMatches(matches: List<MatchesDB>)
+    @Query("SELECT * FROM fixtures WHERE fixture_date = :date")
+    suspend fun getFixturesByDate(date: String): List<FixtureDB>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMatch(matchesDB: MatchesDB)
+    suspend fun insertFixtures(fixtures: List<FixtureDB>)
 
-    @Update
-    suspend fun updateMatch(matchesDB: MatchesDB)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFixture(fixture: FixtureDB)
 
-    @Query("DELETE FROM matches WHERE id = :id")
-    suspend fun removeMatch(id: Long)
+    @Query("DELETE FROM fixtures WHERE id = :id")
+    suspend fun removeFixture(id: Int)
 }

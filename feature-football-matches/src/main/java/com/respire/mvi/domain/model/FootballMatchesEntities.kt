@@ -27,6 +27,7 @@ data class FixtureDetailEntity(
     val referee: String?,
     val timezone: String,
     val date: String,
+    val time: String,
     val timestamp: Long,
     val periods: PeriodsEntity,
     val venue: VenueEntity?,

@@ -26,15 +26,13 @@ import com.respire.mvi.ui.base.ui.theme.ThemeMode
 import com.respire.mvi.ui.screens.footballMatchesScreen.FootballMatchesScreen
 import com.respire.mvi.ui.screens.settingsScreen.SettingsScreen
 
-sealed class TabItem(val route: String, val title: String, val icon: @Composable () -> Unit) {
+sealed class TabItem(val title: String, val icon: @Composable () -> Unit) {
     object Matches : TabItem(
-        route = "matches",
         title = "Matches",
         icon = { Icon(Icons.Default.Home, contentDescription = "Matches") }
     )
 
     object Settings : TabItem(
-        route = "settings",
         title = "Settings",
         icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") }
     )

@@ -1,22 +1,20 @@
 package com.respire.mvi.ui.screens.privacyScreen
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.respire.mvi.ui.navigation.Screen
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import android.os.Bundle
 
 @HiltViewModel(assistedFactory = PrivacyViewModel.PrivacyViewModelFactory::class)
 class PrivacyViewModel @AssistedInject constructor(
-    private val app: Application,
     val savedStateHandle: SavedStateHandle,
     @Assisted private val details: String
-) : AndroidViewModel(app) {
+) : ViewModel() {
 
     var webViewBundle: Bundle? = null
 

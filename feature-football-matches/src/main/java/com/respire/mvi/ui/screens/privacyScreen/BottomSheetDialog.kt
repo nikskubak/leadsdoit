@@ -16,8 +16,8 @@ fun BottomSheetDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
-    confirmText: String = "Confirm",
-    cancelText: String = "Cancel",
+    confirmText: String,
+    cancelText: String,
     content: @Composable () -> Unit
 ) {
     ModalBottomSheet(

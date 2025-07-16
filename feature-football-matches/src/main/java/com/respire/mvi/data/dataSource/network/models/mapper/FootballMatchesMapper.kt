@@ -1,7 +1,10 @@
 package com.respire.mvi.data.dataSource.network.models.mapper
 
+import android.util.Log
 import com.respire.mvi.data.dataSource.network.models.response.*
 import com.respire.mvi.domain.model.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object FootballMatchesMapper {
     
@@ -45,7 +48,8 @@ object FootballMatchesMapper {
             id = id,
             referee = referee,
             timezone = timezone,
-            date = date,
+            date = formatDate(date),
+            time = formatTime(date),
             timestamp = timestamp,
             periods = periods.toEntity(),
             venue = venue?.toEntity(),
@@ -165,7 +169,8 @@ object FootballMatchesMapper {
             id = id,
             referee = referee,
             timezone = timezone,
-            date = date,
+            date = formatDate(date),
+            time = formatTime(date),
             timestamp = timestamp,
             periods = periods.toEntity(),
             venue = venue?.toEntity(),
@@ -542,5 +547,39 @@ object FootballMatchesMapper {
             missed = missed,
             saved = saved
         )
+    }
+
+    private val inputDateFormats = listOf(
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US)
+    )
+    private val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val outputTimeFormat = SimpleDateFormat("HH:mm", Locale.US)
+
+    private fun formatDate(date: String): String {
+        for (format in inputDateFormats) {
+            try {
+                val parsed = format.parse(date)
+                if (parsed != null) {
+                    val format1 = outputDateFormat.format(parsed)
+                    Log.d("TAG", "formatDate: $date - $format1")
+                    return format1
+                }
+            } catch (_: Exception) {}
+        }
+        return date // fallback to original if parsing fails
+    }
+
+    private fun formatTime(date: String): String {
+        for (format in inputDateFormats) {
+            try {
+                val parsed = format.parse(date)
+                if (parsed != null) {
+                    val format1 = outputTimeFormat.format(parsed)
+                    Log.d("TAG", "formatDate: $date - $format1")
+                    return format1
+                }
+            } catch (_: Exception) {}
+        }
+        return date // fallback to original if parsing fails
     }
 } 

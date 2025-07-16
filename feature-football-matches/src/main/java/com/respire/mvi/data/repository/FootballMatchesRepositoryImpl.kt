@@ -1,6 +1,7 @@
 package com.respire.mvi.data.repository
 
 import com.respire.mvi.data.dataSource.database.dao.MatchesDao
+import com.respire.mvi.data.dataSource.database.models.DbMapper
 import com.respire.mvi.data.dataSource.network.FootballMatchesApi
 import com.respire.mvi.data.dataSource.network.models.mapper.FootballMatchesMapper
 import com.respire.mvi.data.dataSource.network.models.mapper.FootballMatchesMapper.toEntity
@@ -17,28 +18,36 @@ class FootballMatchesRepositoryImpl @Inject constructor(
     
     override fun getMatches(date: String): Flow<Result<List<FixtureEntity>>> = flow {
         try {
-            // Call the API to get fixtures for the specified date
             val response = footballMatchesApi.getFixtures(date = date)
-            
             if (response.isSuccessful) {
                 response.body()?.let { apiResponse ->
-                    // Map the response to domain entities
                     val entities = FootballMatchesMapper.mapResponse(apiResponse) { fixtureResponse ->
                         fixtureResponse.toEntity()
                     }
-                    
-                    // Emit success with the list of fixtures
+                    // Save to DB
+                    val dbModels = entities.response.map { DbMapper.fromEntity(it) }
+                    matchesDao.insertFixtures(dbModels)
                     emit(Result.success(entities.response))
                 } ?: emit(Result.failure(Exception("Empty response from API")))
             } else {
-                // Handle API error
                 val errorMessage = response.errorBody()?.string() ?: "Unknown error occurred"
-                emit(Result.failure(Exception("API Error: ${response.code()} - $errorMessage")))
+                // Try DB fallback
+                val dbFixtures = matchesDao.getFixturesByDate(date).map { DbMapper.toEntity(it) }
+                if (dbFixtures.isNotEmpty()) {
+                    emit(Result.success(dbFixtures))
+                } else {
+                    emit(Result.failure(Exception("API Error: ${response.code()} - $errorMessage")))
+                }
             }
         } catch (e: Exception) {
-            // Handle network or other exceptions
-            e.printStackTrace()
-            emit(Result.failure(Exception("Network error: ${e.message}")))
+            // On network error, try DB fallback
+            val dbFixtures = matchesDao.getFixturesByDate(date).map { DbMapper.toEntity(it) }
+                .sortedBy { it.fixture.timestamp }
+            if (dbFixtures.isNotEmpty()) {
+                emit(Result.success(dbFixtures))
+            } else {
+                emit(Result.failure(Exception("Network error: ${e.message}")))
+            }
         }
     }
     

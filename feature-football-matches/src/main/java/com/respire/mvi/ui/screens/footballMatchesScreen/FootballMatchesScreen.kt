@@ -381,7 +381,7 @@ fun MatchItem(fixtureEntity: FixtureEntity, onEvent: (event: FootballMatchesEven
                     } else {
                         // Match hasn't started yet - show match time
                         Text(
-                            text = formatMatchTime(fixtureEntity.fixture.date),
+                            text = fixtureEntity.fixture.time,
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -456,24 +456,12 @@ fun ObserveEffects(viewModel: FootballMatchesViewModel, onItemSelected: (id: Int
 
 private fun formatMatchDate(dateString: String): String {
     return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
         val date = inputFormat.parse(dateString)
         date?.let { outputFormat.format(it) } ?: dateString
     } catch (e: Exception) {
         dateString
-    }
-}
-
-private fun formatMatchTime(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        outputFormat.isLenient = false
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: "TBD"
-    } catch (e: Exception) {
-        "TBD"
     }
 }
 
